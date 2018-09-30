@@ -78,22 +78,43 @@ histogram = np.histogram(heights)
 
 ## Motivation (cont'd)
 
-* In 2016, no adequate histogramming library in Python
+* In 2016, no adequate histogramming in Python (?)
 
-* Lots of particle/dose distributions (2D, 3D)
+* Lots of particle/dose distributions (2D, 3D) to visualize
+
+* Will to create a useful open source library on my own
+
+<p class="fragment" style="font-size: 150%">=> Physt</p>
+
 ---
 
-## Goals
+## Use cases
 
-* simple & nice API
+* Data exploration
 
-* no complicated dependencies
+* Compact representation of distributions
+
+* Visualization
+
+<div style="height: .5em"></div>
+
+*General, non-field-specific audience.*
+
+---
+
+## Design goals
+
+* simple & familiar API (~numpy, pandas)
+
+* histogram as first-class object (ROOT-inspired)
+
+* no complex dependencies
   
-  * numpy
-  
-  * matplotlib
+  * **numpy** necessary
 
-* extensible
+  * **matplotlib** recommended 
+
+* extensibility (visualization, computing engines, IO)
 
 ---
 
@@ -101,13 +122,43 @@ histogram = np.histogram(heights)
 
 https://github.com/janpipek/physt
 
-526 commits
+528 commits, 
 
 2 main branches
 
-- version 0.3.42 (rich features)
+- version 0.3.43 (rich features)
 
 - re-design 0.4 (goal: cleaner API)
+
+---
+
+## Example 1
+
+```python
+
+```
+
+---
+
+## Computation engines
+
+* Currently, **numpy** is doing most of the work.
+
+* Experimental usage of **dask** for "big" data.
+
+* **tensorflow**?
+
+---
+
+## Plotting backends
+
+* matplotlib (standard)
+
+* vega (for notebooks)
+
+* plotly (way to go?)
+
+* ascii (wish I had it)
 
 ---
 
