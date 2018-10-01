@@ -88,7 +88,7 @@ histogram = np.histogram(heights)
 
 ---
 
-## Use cases
+## Target use cases
 
 * Data exploration
 
@@ -165,6 +165,22 @@ h.plot()
 ---
 
 ```python
+h.frequencies
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+array([   18,   346,  3383, 14978, 31434, 31348, 14827,  3318,   330,  18])
+```
+
+</div>
+
+<div style="height: 1.2em"></div>
+
+```python
 h.bins
 ```
 
@@ -196,9 +212,13 @@ NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
 
 ---
 
+<img src="class-diagram.png" />
+
+---
+
 ## Binning schemas
 
-* numpy
+* numpy (+ optimized bin counts)
 * fixed-width (adaptive)
     * human (special case)
     * integer (special case)
@@ -207,7 +227,18 @@ NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
 
 ---
 
-## Transformations
+## Adaptive binning
+
+```
+hx = h2(particles["x"], particles["y"], "fixed_width", 5, adaptive=True)
+
+hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
+
+hx << (43.4, -27.5)
+hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
+```
+
+<div><img src="pre.png"/><img src="post.png"></div>
 
 ---
 
@@ -223,13 +254,30 @@ NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
 
 ## Plotting backends
 
-* matplotlib (standard)
+* **matplotlib** (standard)
 
-* vega (for notebooks)
+* **vega** (for notebooks)
 
-* plotly (way to go?)
+* **plotly** (way to go?)
 
-* ascii (wish I had it)
+* **ascii** (wish I had it)
+
+---
+
+```
+hx = h2(particles["x"], particles["y"], "fixed_width", 5)
+
+# Matplotlib
+hx.plot(show_zero=False, cmap="plasma", title="matplotlib (default)")
+
+# Vega
+hx.plot(backend="vega", show_zero=False, cmap="plasma", title="vega (explicit)")
+```
+
+<div>
+    <img src="mpl.png"/>
+    <img src="vega.png"/>
+</div>
 
 ---
 
