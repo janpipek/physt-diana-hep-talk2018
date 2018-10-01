@@ -39,7 +39,7 @@ revealOptions:
 
 <b style="opacity:0.8; margin: .5em;">2007-2015</b> Ph.D. in medical physics (Geant4)
 
-<b style="opacity:0.8; margin: .5em;">2015-2017</b> post-doc in mdical physics (Geant4)
+<b style="opacity:0.8; margin: .5em;">2015-2017</b> post-doc in medical physics (Geant4)
 
 <b style="opacity:0.8; margin: .5em;">2017-</b> data scientist @ Showmax, Prague
 
@@ -132,7 +132,7 @@ https://github.com/janpipek/physt
 
 ---
 
-## Example 1
+## Example
 
 ```python
 import pandas as pd
@@ -229,7 +229,7 @@ NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
 
 ## Adaptive binning
 
-```
+```python
 hx = h2(particles["x"], particles["y"], "fixed_width", 5, adaptive=True)
 
 hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
@@ -242,6 +242,18 @@ hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
 
 ---
 
+## Other features
+
+* arithmetics (+ - * /)
+
+* statistics (mean, bin variance...)
+
+* projections, slicing
+
+* coordinate transformations (cylindrical, spherical)
+
+---
+
 ## Computation engines
 
 * Currently, **numpy** is doing most of the work.
@@ -249,6 +261,18 @@ hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
 * Experimental usage of **dask** for "big" data.
 
 * **tensorflow**?
+
+* **HDembinski/histogram**?
+
+---
+
+## Interoperability
+
+- pandas, xarray, numpy
+
+- <span style="color:#888">ROOT</span>? Geant4 histograms CSV
+
+- file I/0: JSON, protobuf, <span style="color:#888">HDF5</span>
 
 ---
 
@@ -264,7 +288,7 @@ hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
 
 ---
 
-```
+```python
 hx = h2(particles["x"], particles["y"], "fixed_width", 5)
 
 # Matplotlib
@@ -281,10 +305,58 @@ hx.plot(backend="vega", show_zero=False, cmap="plasma", title="vega (explicit)")
 
 ---
 
+```python
+particles = pd.read_csv("protons.csv")
+h = h1(particles["ekin"][::5], 50, title="Energy distribution of protons")
+h.plot.scatter(errors=True, yscale="log", s=10, show_stats=True)
+```
+
+<img src="errors.png"/>
+
+---
+
+```python
+iris = seaborn.load_dataset('iris')
+iris_hist = h(iris[["sepal_length", "sepal_width", "petal_length", "petal_width"]],
+              "human", name="Iris")
+
+sepals = iris_hist.projection("sepal_length", "sepal_width")
+petals = iris_hist.projection("petal_length", "petal_width")
+
+sepals.plot(show_zero=False, show_values=True, title="Iris - sepals")
+petals.plot(show_zero=False, show_values=True, title="Iris - petals")
+```
+
+<div>
+    <img src="petals.png"/>
+    <img src="sepals.png"/>
+</div>
+
+---
+
+<img src="fluence.png"/>
+
+---
+
+```python
+data = ...    # Some random x, y, z points
+
+h = special.spherical_histogram(data)                 
+h = h.projection("theta", "phi")
+
+h.plot.globe_map(density=True, figsize=(7, 7), cmap="rainbow") 
+```
+
+<img src="globe.png" style="max-width:50%"/>
+
+---
+
 <!-- .slide: data-background="background.png" -->
 
 <div>
     <div><i class="fab fa-github"></i> [janpipek/physt](https://github.com/janpipek/physt)</div>
     <div style="height:0.5em;"></div>
     <div><i class="fas fa-envelope"></i> jan.pipek@gmail.com</div>
+    <div style="height:0.5em;"></div>
+    <div><i class="fab fa-twitter"></i> <i class="fab fa-github"></i>&nbsp;janpipek</div>
 <div>
