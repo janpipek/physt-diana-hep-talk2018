@@ -94,7 +94,7 @@ histogram = np.histogram(heights)
 
 * Compact representation of distributions
 
-* Visualization
+* Visualization / presentation
 
 <div style="height: .5em"></div>
 
@@ -104,7 +104,7 @@ histogram = np.histogram(heights)
 
 ## Design goals
 
-* simple & familiar API (~numpy, pandas)
+* simple & familiar API (~numpy, ~pandas)
 
 * histogram as first-class object (ROOT-inspired)
 
@@ -135,8 +135,79 @@ https://github.com/janpipek/physt
 ## Example 1
 
 ```python
+import pandas as pd
+from physt import h1
 
+particles = pd.read_csv("protons.csv")
+h = h1(particles["energy"], title="Energy distribution of protons")
 ```
+
+<div class="fragment output">
+
+<div style="height: .5em"></div>
+
+```python
+Histogram1D(bins=(10,), total=100000, dtype=int64)
+```
+
+</div>
+
+---
+
+```python
+h.plot()
+```
+
+<div style="height: .5em"></div>
+
+<img src="h1.png"/>
+
+---
+
+```python
+h.bins
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+array([[ 38.83518235,  ...,  81.791677  ]])
+```
+
+</div>
+
+<div style="height: 1.2em"></div>
+
+```python
+h.binning
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
+```
+
+</div>
+
+---
+
+## Binning schemas
+
+* numpy
+* fixed-width (adaptive)
+    * human (special case)
+    * integer (special case)
+* exponential
+* quantile
+
+---
+
+## Transformations
 
 ---
 
@@ -169,9 +240,3 @@ https://github.com/janpipek/physt
     <div style="height:0.5em;"></div>
     <div><i class="fas fa-envelope"></i> jan.pipek@gmail.com</div>
 <div>
-
-
-
-
-
-
