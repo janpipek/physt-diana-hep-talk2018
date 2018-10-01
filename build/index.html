@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>physt</title>
+        <link rel="stylesheet" href="./css/reveal.css">
+        <link rel="stylesheet" href="./theme/physt-white.css" id="theme">
+        <link rel="stylesheet" href="./css/highlight/idea.css">
+        <link rel="stylesheet" href="./css/print/paper.css" type="text/css" media="print">
+          <link rel="stylesheet" href="./_assets/fonts/fontawesome/fontawesome.css">
+
+
+    </head>
+    <body>
+
+        <div class="reveal">
+            <div class="slides"><section  data-markdown><script type="text/template">
+
+<!-- for https://indico.cern.ch/event/759556/ -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Palanquin" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"> 
+
+<!-- .slide: data-background="background.png" -->
+
+# physt <img src="physt-logo.svg" style="height: 100%; position: relative; top: .3em;"/>
+
+<div style="height: 1em"></div>
+
+### DIANA meeting, <span style="font-size: 80%; opacity:0.5">1<sup style="font-size: 60%">st</sup> October 2018</span>
+
+##### Jan Pipek, <span style="font-size: 80%; text-transform: none; opacity:0.5">Showmax</span>
+
+<div style="height: .5em"></div>
+
+<div><i class="fab fa-github"></i> [janpipek/physt](https://github.com/janpipek/physt)</div></script></section><section  data-markdown><script type="text/template">
+## Background
+
+<div style="height: 1em"></div>
+
+<b style="opacity:0.8; margin: .5em;">2001-2007</b> masters in physics (HEP)
+
+<b style="opacity:0.8; margin: .5em;">2007-2015</b> Ph.D. in medical physics (Geant4)
+
+<b style="opacity:0.8; margin: .5em;">2015-2017</b> post-doc in medical physics (Geant4)
+
+<b style="opacity:0.8; margin: .5em;">2017-</b> data scientist @ Showmax, Prague
+</script></section><section  data-markdown><script type="text/template">
+## Motivation
+
+<div style="height: .5em"></div>
+
+```python
+import numpy as np
+histogram = np.histogram(heights)
+```
+
+<div class="fragment output">
+
+<div style="height: .5em"></div>
+
+```python
+(array([  4,  22,  96, 228, 272,          # Frequencies
+        226, 104,  38,   9,   1]),
+
+
+ array([132.1841, 141.0516, 149.9191,     # Edges
+        158.7866, 167.6541, 176.5216,
+        185.3891, 194.2566, 203.1241,
+        211.9916, 220.8591])
+```
+</div>
+
+<div style="height: .5em"></div>
+
+<p class="fragment"><i class="fas fa-frown"></i> Tuple of arrays?</p>
+</script></section><section  data-markdown><script type="text/template">
+## Motivation (cont'd)
+
+* In 2016, no adequate histogramming in Python (?)
+
+* Lots of particle/dose distributions (2D, 3D) to visualize
+
+* Will to create a useful open source library on my own
+
+<p class="fragment" style="font-size: 150%">=> Physt</p>
+</script></section><section  data-markdown><script type="text/template">
+## Target use cases
+
+* Data exploration
+
+* Compact representation of distributions
+
+* Visualization / presentation
+
+<div style="height: .5em"></div>
+
+*General, non-field-specific audience.*
+</script></section><section  data-markdown><script type="text/template">
+## Design goals
+
+* simple & familiar API (~numpy, ~pandas)
+
+* histogram as first-class object (ROOT-inspired)
+
+* no complex dependencies
+  
+  * **numpy** necessary
+
+  * **matplotlib** recommended 
+
+* extensibility (visualization, computing engines, IO)
+</script></section><section  data-markdown><script type="text/template">
+## Status
+
+https://github.com/janpipek/physt
+
+528 commits, 
+
+2 main branches
+
+- version 0.3.43 (rich features)
+
+- re-design 0.4 (goal: cleaner API)
+</script></section><section  data-markdown><script type="text/template">
+## Example
+
+```python
+import pandas as pd
+from physt import h1
+
+particles = pd.read_csv("protons.csv")
+h = h1(particles["energy"], title="Energy distribution of protons")
+```
+
+<div class="fragment output">
+
+<div style="height: .5em"></div>
+
+```python
+Histogram1D(bins=(10,), total=100000, dtype=int64)
+```
+
+</div>
+</script></section><section  data-markdown><script type="text/template">
+```python
+h.plot()
+```
+
+<div style="height: .5em"></div>
+
+<img src="h1.png"/>
+</script></section><section  data-markdown><script type="text/template">
+```python
+h.frequencies
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+array([   18,   346,  3383, 14978, 31434, 31348, 14827,  3318,   330,  18])
+```
+
+</div>
+
+<div style="height: 1.2em"></div>
+
+```python
+h.bins
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+array([[ 38.83518235,  ...,  81.791677  ]])
+```
+
+</div>
+
+<div style="height: 1.2em"></div>
+
+```python
+h.binning
+```
+
+<div class="output">
+
+<div style="height: .2em"></div>
+
+```python
+NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
+```
+
+</div>
+</script></section><section  data-markdown><script type="text/template">
+<img src="class-diagram.png" />
+</script></section><section  data-markdown><script type="text/template">
+## Binning schemas
+
+* numpy (+ optimized bin counts)
+* fixed-width (adaptive)
+    * human (special case)
+    * integer (special case)
+* exponential
+* quantile
+</script></section><section  data-markdown><script type="text/template">
+## Adaptive binning
+
+```python
+hx = h2(particles["x"], particles["y"], "fixed_width", 5, adaptive=True)
+
+hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
+
+hx << (43.4, -27.5)
+hx.plot(figsize=(5, 5), show_zero=False, show_colorbar=False, cmap="rainbow")
+```
+
+<div><img src="pre.png"/><img src="post.png"></div>
+</script></section><section  data-markdown><script type="text/template">
+## Other features
+
+* arithmetics (+ - * /)
+
+* statistics (mean, bin variance...)
+
+* projections, slicing
+
+* coordinate transformations (cylindrical, spherical)
+</script></section><section  data-markdown><script type="text/template">
+## Computation engines
+
+* Currently, **numpy** is doing most of the work.
+
+* Experimental usage of **dask** for "big" data.
+
+* **tensorflow**?
+
+* **HDembinski/histogram**?
+</script></section><section  data-markdown><script type="text/template">
+## Interoperability
+
+- pandas, xarray, numpy
+
+- <span style="color:#888">ROOT</span>? Geant4 histograms CSV
+
+- file I/0: JSON, protobuf, <span style="color:#888">HDF5</span>
+</script></section><section  data-markdown><script type="text/template">
+## Plotting backends
+
+* **matplotlib** (standard)
+
+* **vega** (for notebooks)
+
+* **plotly** (way to go?)
+
+* **ascii** (wish I had it)
+</script></section><section  data-markdown><script type="text/template">
+```python
+hx = h2(particles["x"], particles["y"], "fixed_width", 5)
+
+# Matplotlib
+hx.plot(show_zero=False, cmap="plasma", title="matplotlib (default)")
+
+# Vega
+hx.plot(backend="vega", show_zero=False, cmap="plasma", title="vega (explicit)")
+```
+
+<div>
+    <img src="mpl.png"/>
+    <img src="vega.png"/>
+</div>
+</script></section><section  data-markdown><script type="text/template">
+```python
+particles = pd.read_csv("protons.csv")
+h = h1(particles["ekin"][::5], 50, title="Energy distribution of protons")
+h.plot.scatter(errors=True, yscale="log", s=10, show_stats=True)
+```
+
+<img src="errors.png"/>
+</script></section><section  data-markdown><script type="text/template">
+```python
+iris = seaborn.load_dataset('iris')
+iris_hist = h(iris[["sepal_length", "sepal_width", "petal_length", "petal_width"]],
+              "human", name="Iris")
+
+sepals = iris_hist.projection("sepal_length", "sepal_width")
+petals = iris_hist.projection("petal_length", "petal_width")
+
+sepals.plot(show_zero=False, show_values=True, title="Iris - sepals")
+petals.plot(show_zero=False, show_values=True, title="Iris - petals")
+```
+
+<div>
+    <img src="petals.png"/>
+    <img src="sepals.png"/>
+</div>
+</script></section><section  data-markdown><script type="text/template">
+<img src="fluence.png"/>
+</script></section><section  data-markdown><script type="text/template">
+```python
+data = ...    # Some random x, y, z points
+
+h = special.spherical_histogram(data)                 
+h = h.projection("theta", "phi")
+
+h.plot.globe_map(density=True, figsize=(7, 7), cmap="rainbow") 
+```
+
+<img src="globe.png" style="max-width:50%"/>
+</script></section><section  data-markdown><script type="text/template">
+<!-- .slide: data-background="background.png" -->
+
+<div>
+    <div><i class="fab fa-github"></i> [janpipek/physt](https://github.com/janpipek/physt)</div>
+    <div style="height:0.5em;"></div>
+    <div><i class="fas fa-envelope"></i> jan.pipek@gmail.com</div>
+    <div style="height:0.5em;"></div>
+    <div><i class="fab fa-twitter"></i> <i class="fab fa-github"></i>&nbsp;janpipek</div>
+<div></script></section></div>
+        </div>
+
+        <script src="./lib/js/head.min.js"></script>
+        <script src="./js/reveal.js"></script>
+
+        <script>
+            function extend() {
+              var target = {};
+              for (var i = 0; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                  if (source.hasOwnProperty(key)) {
+                    target[key] = source[key];
+                  }
+                }
+              }
+              return target;
+            }
+
+            // Optional libraries used to extend on reveal.js
+            var deps = [
+              { src: './lib/js/classList.js', condition: function() { return !document.body.classList; } },
+              { src: './plugin/markdown/marked.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+              { src: './plugin/markdown/markdown.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+              { src: './plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+              { src: './plugin/zoom-js/zoom.js', async: true },
+              { src: './plugin/notes/notes.js', async: true },
+              { src: './plugin/math/math.js', async: true }
+            ];
+
+            // default options to init reveal.js
+            var defaultOptions = {
+              controls: true,
+              progress: true,
+              history: true,
+              center: true,
+              transition: 'default', // none/fade/slide/convex/concave/zoom
+              dependencies: deps
+            };
+
+            // options from URL query string
+            var queryOptions = Reveal.getQueryHash() || {};
+
+            var options = {"transition":"fade","controls":false,"progress":true,"pdfSeparateFragments":false};
+            options = extend(defaultOptions, options, queryOptions);
+        </script>
+
+
+        <script>
+            Reveal.initialize(options);
+        </script>
+    </body>
+</html>
