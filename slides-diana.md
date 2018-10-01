@@ -219,6 +219,7 @@ NumpyBinning(array([ 38.83518235, ...,  81.791677  ]))
 ## Binning schemas
 
 * numpy (+ optimized bin counts)
+* static (non-consecutive)
 * fixed-width (adaptive)
     * human (special case)
     * integer (special case)

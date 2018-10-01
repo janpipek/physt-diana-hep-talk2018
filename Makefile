@@ -4,14 +4,14 @@ themeoptions = --theme $(theme) --highlight-theme $(highlighttheme) --css fonts/
 
 all: notebook static  # print
 
-static: slides.md background.png
-	rm -rf build
-	reveal-md slides.md --static build $(themeoptions)
+static: slides-diana.md background.png
+	rm -rf docs
+	reveal-md slides-diana.md --static build $(themeoptions)
 	cp -r theme build
 	cp *png build
 	cp *svg build
 	cp -r fonts build
-	cp -r images build
+	mv build docs
 
 notebook:
 	jupyter nbconvert --execute code/talk.ipynb
